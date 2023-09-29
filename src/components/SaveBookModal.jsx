@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import "../css/SaveBookModal.css";
+import "../css/BookModal.css";
 
 import validateString from "../logic/validateString";
 import validateNumber from "../logic/validateNumber";

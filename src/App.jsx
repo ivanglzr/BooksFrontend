@@ -7,10 +7,22 @@ import Header from "./components/Header";
 import SaveBookModal from "./components/SaveBookModal";
 
 import { getBooks } from "./services/books";
+import EditBookModal from "./components/EditBookModal";
+import { useRef } from "react";
 
 export default function App() {
   const [books, setBooks] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const updatedBook = useRef({
+    id: "",
+    title: "",
+    author: "",
+    pages: null,
+    readed: null,
+  });
+
+  console.log(updatedBook.current);
 
   useEffect(() => {
     getBooks()
@@ -19,10 +31,22 @@ export default function App() {
         console.log(books);
       })
       .catch((err) => console.log(err));
-  }, [showModal]);
+  }, [showModal, showUpdateModal]);
 
   const handleClick = () => {
     setShowModal(!showModal);
+  };
+
+  const handleUpdateModal = ({ id, title, author, pages, readed }) => {
+    setShowUpdateModal(!showUpdateModal);
+
+    updatedBook.current = {
+      id: id,
+      title: title,
+      author: author,
+      pages: pages,
+      readed: readed,
+    };
   };
 
   const deleteUpdate = (i) => {
@@ -64,6 +88,7 @@ export default function App() {
                 bg={bg}
                 id={id}
                 deleteUpdate={deleteUpdate}
+                setShowUpdateModal={handleUpdateModal}
                 index={i}
               />
             );
@@ -71,6 +96,16 @@ export default function App() {
         </tbody>
       </table>
       {showModal && <SaveBookModal setModal={handleClick} />}
+      {showUpdateModal && (
+        <EditBookModal
+          title={updatedBook.current.title}
+          author={updatedBook.current.author}
+          pages={updatedBook.current.pages}
+          readed={updatedBook.current.readed}
+          id={updatedBook.current.id}
+          setModal={handleUpdateModal}
+        />
+      )}
     </>
   );
 }

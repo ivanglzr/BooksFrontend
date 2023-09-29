@@ -33,5 +33,26 @@ tr {
         box-shadow: 0 0 7px #16f inset;
       }
     }
+
+    & button {
+      background: transparent;
+      border: none;
+      padding: 10px;
+
+      &:focus {
+        outline: none;
+      }
+
+      & i {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.2s linear;
+
+        &:hover {
+          color: #ccc;
+        }
+      }
+    }
   }
 }

@@ -2,9 +2,13 @@
 
 import "../css/Book.css";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import { deleteBook } from "../services/books";
+
+import { updateBook } from "../services/books";
+
+import debounce from "just-debounce-it";
 
 export default function Book({
   title,
@@ -15,6 +19,7 @@ export default function Book({
   bg,
   id,
   deleteUpdate,
+  setShowUpdateModal,
 }) {
   const [readedPages, setReadedPages] = useState(readed);
 
@@ -23,11 +28,26 @@ export default function Book({
   const percentageColorGreen = percentageReaded * 2.55 + 50;
   const percentageColorRed = 255 - percentageReaded * 2 + 50;
 
+  const debouncedUpdateReaded = useCallback(
+    debounce((readedPages) => {
+      updateBook({
+        id: id,
+        title: title,
+        author: author,
+        pages: pages,
+        readed: readedPages,
+      });
+      console.log(readedPages);
+    }, 1000),
+    []
+  );
+
   const handleChange = (e) => {
     const newReadedPages = e.target.value;
     if (newReadedPages > pages)
       return alert("No puedes leer mas paginas de las que tiene el libro");
-    setReadedPages(e.target.value);
+    setReadedPages(newReadedPages);
+    debouncedUpdateReaded(newReadedPages);
   };
 
   return (
@@ -38,7 +58,7 @@ export default function Book({
       <td>{pages}</td>
       <td>
         <input
-          type="text"
+          type="number"
           name="readedPages"
           autoComplete="off"
           value={readedPages}
@@ -53,6 +73,20 @@ export default function Book({
         {Math.round(percentageReaded)}%
       </td>
       <td>
+        <button>
+          <i
+            className="fa-solid fa-pen-to-square"
+            onClick={() =>
+              setShowUpdateModal({
+                title: title,
+                author: author,
+                pages: pages,
+                readed: readed,
+                id: id,
+              })
+            }
+          ></i>
+        </button>
         <button
           onClick={() => {
             deleteBook(id);

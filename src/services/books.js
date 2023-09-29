@@ -59,3 +59,29 @@ export async function deleteBook(id) {
 
   return data;
 }
+
+export async function updateBook({ id, title, author, pages, readed }) {
+  const book = JSON.stringify({
+    title: title,
+    author: author,
+    pages: pages,
+    readed: readed,
+    image: null,
+  });
+
+  const res = await fetch(url + methods.book + `/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: book,
+  });
+
+  if (!res.ok) {
+    throw new Error("Error al actualizar el libro");
+  }
+
+  const data = await res.json();
+
+  return data;
+}
