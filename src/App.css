@@ -1,0 +1,14 @@
+table {
+  width: 100%;
+  border-spacing: 0;
+  text-align: center;
+
+  & thead {
+    background: #444;
+    height: 80px;
+
+    & tr th {
+      font-size: 20px;
+    }
+  }
+}

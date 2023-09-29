@@ -1,0 +1,37 @@
+tr {
+  height: 50px;
+
+  &.light-row {
+    background: #444;
+
+    & td input {
+      background: #222;
+    }
+  }
+
+  & td {
+    padding: 10px;
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      text-align: left;
+    }
+
+    & input {
+      background: #444;
+      width: 80px;
+      height: 40px;
+      margin: 0 auto;
+      border: 1px solid #16f;
+      border-radius: 5px;
+      color: #fff;
+      text-align: center;
+      transition: 0.2s;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 7px #16f inset;
+      }
+    }
+  }
+}
